@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Canvas x:Name="cnvsMain" Width="750" Margin="25,95,25,25" Background="#FFC7CEEC"/>
+        <Canvas x:Name="cnvsMain" Width="750" Margin="25,95,25,25" Background="#FFC7CEEC" MouseLeftButtonDown="Ellipse_MouseLeftButtonDown"/>
         <Button x:Name="btnCreateEllipse" Content="Ellipse erstellen" HorizontalAlignment="Center" VerticalAlignment="Top" Width="110" Margin="0,30,0,0" Click="btnCreateEllipse_Click"/>
 
     </Grid>

@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿
+using System.IO.IsolatedStorage;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -20,6 +23,10 @@ namespace WpfEllipsenEditor
         // Random Klasse erstellt
         Random r = new Random();
 
+        // Ausgewählte Ellipse wird gemerkt
+        Ellipse selectedEllipse;
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,8 +40,8 @@ namespace WpfEllipsenEditor
             Ellipse ellipse = new Ellipse();
 
             // 2. Zufällige Größe 
-            ellipse.Width = r.NextInt64(20, 180);
-            ellipse.Height = r.NextInt64(20, 180);
+            ellipse.Width = r.Next(20, 180);
+            ellipse.Height = r.Next(20, 180);
 
             // 3. Zufällige Farbe
             byte rValue = (byte)r.Next(0, 256);
@@ -54,8 +61,39 @@ namespace WpfEllipsenEditor
             Canvas.SetLeft(ellipse, posX);
             Canvas.SetTop(ellipse, posY);
 
-            // 5. Ellipse wird hinzugefügt
+
+            // 5. Event zuweisen
+            ellipse.MouseLeftButtonDown += Ellipse_MouseLeftButtonDown;
+
+
+            // 6. Ellipse wird hinzugefügt
             cnvsMain.Children.Add(ellipse);
+
+        }
+
+
+        private void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            // falls vorher eine Ellipose ausgewählt war, wird deren Markierung entfernt
+            if (selectedEllipse != null )
+            {
+                selectedEllipse.Stroke = null;
+                selectedEllipse.StrokeThickness = 0;
+
+            }
+
+            // Die neu angeklickte Ellipse wird gespeichert
+            selectedEllipse = sender as Ellipse;
+
+            // Die neue Auswahl wird sichtbar gemacht
+            if (selectedEllipse != null )
+            {
+                selectedEllipse.Stroke = Brushes.GreenYellow;
+                selectedEllipse.StrokeThickness = 6;
+            }
+            
+            e.Handled = true;
         }
     }
 }
